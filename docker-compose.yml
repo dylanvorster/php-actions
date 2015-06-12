@@ -1,0 +1,7 @@
+# STORM Actions
+# @author Dylan Vorster
+
+phpserver:
+    build: ./tests
+    volumes:
+        - .:/var/www/html/

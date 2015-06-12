@@ -1,0 +1,16 @@
+{
+    "name": "storm/storm-actions",
+    "description": "Description of project STORM Actions.",
+    "authors": [
+        {
+            "name": "Dylan Vorster",
+            "email": "dylan@eezipay.com"
+        }
+    ],
+	"autoload": {
+        "classmap": ["./src"]
+    },
+    "require": {
+		"phpunit/phpunit": "4.7"
+	}
+}
