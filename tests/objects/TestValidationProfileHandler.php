@@ -19,15 +19,17 @@ class TestValidationProfileHandler extends validationProfileHandler{
 	public function addProfile(ValidationProfile $profile){
 		$this->profiles[$profile->getIdentifier()] = $profile;
 	}
-
-	public function getValidationProfile($identifier) {
-		return $this->profiles[$identifier];
-	}
 	
 	public function addIntentProfile(Intent $intent, Parameter $parameter,  ValidationProfile $profile){
 		$this->attachedProfiles[$intent->getName().' '.$parameter->getName()] = $profile;
 	}
 
+	//!--------- required ----------
+	
+	public function getValidationProfile($identifier) {
+		return $this->profiles[$identifier];
+	}
+	
 	public function getValidationProfilesFor(Intent $action,Parameter $parameter) {
 		if(isset($this->attachedProfiles[$action->getName().' '.$parameter->getName()])){
 			return $this->attachedProfiles[$action->getName().' '.$parameter->getName()];

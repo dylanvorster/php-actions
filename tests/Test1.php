@@ -48,8 +48,8 @@ class Test1 extends PHPUnit_Framework_TestCase {
 		$entryNode = (new ClassCheckNode(TestObject1::class))
 			->addNode((new ObjectExposerNode("getAge"))
 				->addNode(new ConditionalValidationNode(ConditionalValidationNode::TYPE_EQUALS,22)))
-			->addNode((new ObjectExposerNode("getNestedObjects"))
-				->addNode((new ItteratorNode())
+			->addNode((new ObjectExposerNode("getNestedObjects")) //TestObject2[]
+				->addNode((new ItteratorNode()) //TestObject2
 					->addNode(new ValidationProfileNode($testProfile)
 		)));
 		$profile = new ValidationProfile($entryNode);
