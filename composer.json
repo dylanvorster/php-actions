@@ -1,5 +1,5 @@
 {
-    "name": "storm/storm-actions",
+    "name": "projectstorm/php-actions",
     "description": "Description of project STORM Actions.",
     "authors": [
         {
@@ -10,7 +10,7 @@
 	"autoload": {
         "classmap": ["./src"]
     },
-    "require": {
+    "require-dev": {
 		"phpunit/phpunit": "4.7"
 	}
 }
