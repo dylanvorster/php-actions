@@ -5,7 +5,7 @@
 class ConditionalValidationNodeFactory extends ValidationNodeFactory{
 	
 	public function __construct() {
-		parent::__construct("ACTIONS/CONDITIONAL_VALIDATION", ConditionalValidationNode::class);
+		parent::__construct("CORE\\condition", ConditionalValidationNode::class);
 	}
 	
 	public function generate() {

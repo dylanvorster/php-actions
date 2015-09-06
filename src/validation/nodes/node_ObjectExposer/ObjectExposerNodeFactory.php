@@ -5,7 +5,7 @@
 class ObjectExposerNodeFactory extends ValidationNodeFactory{
 	
 	public function __construct() {
-		parent::__construct("ACTIONS/OBJECT_EXPOSER", ObjectExposerNode::class);
+		parent::__construct("CORE\\exposer", ObjectExposerNode::class);
 	}
 	
 	public function generate() {

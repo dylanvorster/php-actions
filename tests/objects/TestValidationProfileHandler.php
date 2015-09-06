@@ -3,9 +3,9 @@
 use storm\actions\Intent;
 use storm\actions\Parameter;
 use storm\actions\ValidationProfile;
-use storm\actions\validationProfileHandler;
+use storm\actions\ValidationProfileHandler;
 
-class TestValidationProfileHandler extends validationProfileHandler{
+class TestValidationProfileHandler extends ValidationProfileHandler{
 	
 	protected $profiles;
 	protected $attachedProfiles;

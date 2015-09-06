@@ -15,6 +15,14 @@ class ObjectParameter extends Parameter{
 		$this->class = $class;
 	}
 	
+	public function getType() {
+		return $this->class;
+	}
+	
+	function getClass() {
+		return $this->class;
+	}
+	
 	public function encode($value) {
 		if(!is_a($value, $this->class)){
 			throw new ValidationException("input value on parameter: [{$this->getName()}] is not of type: [{$this->class}]");

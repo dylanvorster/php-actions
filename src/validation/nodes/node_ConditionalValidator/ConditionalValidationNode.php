@@ -64,13 +64,13 @@ class ConditionalValidationNode extends ValidationNode{
 	
 	public function deserialize($data) {
 		parent::deserialize($data);
-		$this->type = $data['type'];
+		$this->type = $data['operator'];
 		$this->value = $data['value'];
 	}
 	
 	public function serialize() {
 		$response = parent::serialize();
-		$response['type'] = $this->type;
+		$response['operator'] = $this->type;
 		$response['value'] = $this->value;
 		return $response;
 	}

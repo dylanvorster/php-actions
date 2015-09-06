@@ -3,7 +3,7 @@
 class ValidationProfileNodeFactory extends ValidationNodeFactory{
 	
 	public function __construct() {
-		parent::__construct("ACTIONS/VALIDATION_PROFILE", ValidationProfileNode::class);
+		parent::__construct("CORE\\external", ValidationProfileNode::class);
 	}
 	
 	public function generate() {

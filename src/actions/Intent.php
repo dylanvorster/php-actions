@@ -13,11 +13,24 @@ class Intent{
 	 * @var Meta
 	 */
 	protected $meta;
+	
+	protected $id;
 
-	public function __construct($name) {
+	public function __construct($name,$id = NULL) {
 		$this->inputParameters = [];
 		$this->meta = new Meta();
 		$this->meta->setName($name);
+		if($id == NULL){
+			$this->id = $name;
+		}
+	}
+	
+	function getID() {
+		return $this->id;
+	}
+
+	function setID($id) {
+		$this->id = $id;
 	}
 	
 	/**
@@ -66,41 +79,70 @@ class Intent{
 	 * @param IntentPayload $payload
 	 */
 	public function validate(IntentPayload $payload,$throw = true){
+		
+		//is this intent allowed at all?
+		if(!Engine::get()->isIntentAllowed($this)){
+			if($throw){
+				throw new ValidationException("Rights check failed for intent: [{$this->getName()}]: not allowed to access this intent.");
+			}
+			return false;
+		}
+		
+		$checksPassed = 0;
+		$shouldParametersBeValidated = Engine::get()->shouldParametersBeValidated($this);
+		
+		//yes it is allowed, now validate each parameter
 		//for each parameter we have, we must find the value in the payload
 		foreach ($this->inputParameters as $parameter) {
-			
-			//now we need to find validators for the nodes
-			$profiles = Engine::get()->getValidationProfilesForIntentParameter($this, $parameter);
-			
+
 			//check to see if the parameter exists
 			if(!$payload->parameterExists($parameter->getName())){
 				if(!$throw){
 					return false;
 				}
-				throw new ValidationException("Rights check failed for action: [{$this->getName()}] on parameter: [{$parameter->getName()}] ".
+				throw new ValidationException("Rights check failed for intent: [{$this->getName()}] on parameter: [{$parameter->getName()}] ".
 					"because the input variable was not found");
 			}
-			
-			//validate each profile which contains an entry node
-			foreach ($profiles as $profile) {
-				try{
-					$result = $profile->validate($payload->get($parameter->getName()));
-				}catch(ValidationException $ex){
-					if(!$throw){
-						return false;
-					}
-					throw new ValidationException("Rights check failed for action: [{$this->getName()}] on parameter: [{$parameter->getName()}] reason: [{$ex->getMessage()}]");
-				}
+
+			//should we check parameters (useful if the user is an admin in your system, because you can then skip this step)
+			if($shouldParametersBeValidated){
 				
-				//and use the value from the payload (if ever a payload returns false, then we know something went wrong, but always prefer exceptions)
-				if($result === false){
-					if(!$throw){
-						return false;
+				//now we need to find validators for the nodes
+				$profiles = Engine::get()->getValidationProfilesForIntentParameter($this, $parameter);
+
+
+				//validate each profile which contains an entry node
+				foreach ($profiles as $profile) {
+					try{
+						$result = $profile->validate($payload->get($parameter->getName()));
+					}catch(ValidationException $ex){
+						if(!$throw){
+							return false;
+						}
+						throw new ValidationException("Rights check failed for intent: [{$this->getName()}] on parameter: [{$parameter->getName()}] reason: [{$ex->getMessage()}]");
 					}
-					throw new ValidationException("Rights check failed for action: [{$this->getName()}] on parameter: [{$parameter->getName()}]");
+
+					//and use the value from the payload (if ever a payload returns false, then we know something went wrong, but always prefer exceptions)
+					if($result === false){
+						if(!$throw){
+							return false;
+						}
+						throw new ValidationException("Rights check failed for intent: [{$this->getName()}] on parameter: [{$parameter->getName()}]");
+					}
+					$checksPassed++;
 				}
 			}
 		}
+			
+		//if this happens, it means we didnt find any profiles
+		if($checksPassed == 0 && $shouldParametersBeValidated){
+			if(!$throw){
+				return false;
+			}
+			throw new ValidationException("Rights check failed for intent: [{$this->getName()}] because there were no profiles setup to test with");
+		}
+		
+		//all checks passed
 		return true;
 	}
 	

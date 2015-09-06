@@ -11,8 +11,12 @@ class ArrayParameter extends Parameter{
 	protected $parameter;
 
 	public function __construct(Parameter $parameter) {
-		parent::__construct($parameter->getName(), $parameter->getDescription(), $parameter->isRequired());
+		parent::__construct($parameter->getName(), $parameter->isRequired());
 		$this->parameter = $parameter;
+	}
+	
+	public function getType() {
+		return $this->parameter->getType().'[]';
 	}
 	
 	public function encode($value) {

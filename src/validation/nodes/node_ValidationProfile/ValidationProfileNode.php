@@ -24,12 +24,12 @@ class ValidationProfileNode extends ValidationNode{
 	
 	public function serialize() {
 		$response = parent::serialize();
-		$response['profile'] = $this->profile->getIdentifier();
+		$response['external'] = $this->profile->getIdentifier();
 		return $response;
 	}
 	
 	public function deserialize($data) {
 		parent::deserialize($data);
-		$this->profile = Engine::get()->getValidationProfile($data['profile']);
+		$this->profile = Engine::get()->getValidationProfile($data['external']);
 	}
 }

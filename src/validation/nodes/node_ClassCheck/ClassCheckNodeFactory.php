@@ -5,7 +5,7 @@
 class ClassCheckNodeFactory extends ValidationNodeFactory{
 	
 	public function __construct() {
-		parent::__construct("ACTIONS/CLASS_CHECK", ClassCheckNode::class);
+		parent::__construct("CORE\\type", ClassCheckNode::class);
 	}
 	
 	public function generate() {

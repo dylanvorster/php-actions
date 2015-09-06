@@ -11,9 +11,6 @@ class TestAction1 extends Action{
 		
 		$this->addParameter(new ObjectParameter('object1', TestObject1::class));
 		$this->inParam('amount');
-		
-		
-		
 		$this->outParam('amount');
 	}
 	

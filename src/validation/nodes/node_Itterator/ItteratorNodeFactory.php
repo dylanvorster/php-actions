@@ -5,7 +5,7 @@
 class ItteratorNodeFactory extends ValidationNodeFactory{
 	
 	public function __construct() {
-		parent::__construct("ACTIONS/ITTERATOR", ItteratorNode::class);
+		parent::__construct("CORE\\itterator", ItteratorNode::class);
 	}
 	
 	public function generate() {

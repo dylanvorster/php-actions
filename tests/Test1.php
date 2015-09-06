@@ -22,11 +22,18 @@ class Test1 extends PHPUnit_Framework_TestCase {
 	 * @var TestValidationProfileHandler 
 	 */
 	protected static $profileHandler;
+	/**
+	 *
+	 * @var TestIntentHandler
+	 */
+	protected static $intentHandler;
 	
 	protected function setUp() {
 		if(self::$profileHandler === NULL){
 			self::$profileHandler = new TestValidationProfileHandler();
+			self::$intentHandler = new TestIntentHandler();
 			Engine::get()->addValidationProfileHandler(self::$profileHandler);
+			Engine::get()->addIntentHandler(self::$intentHandler);
 		}
 	}
 	
@@ -45,6 +52,7 @@ class Test1 extends PHPUnit_Framework_TestCase {
 	 * @depends testProfile1
 	 */
 	public function testProfile2(ValidationProfile $testProfile){
+		TestIntentHandler::$checkParams = false;
 		$entryNode = (new ClassCheckNode(TestObject1::class))
 			->addNode((new ObjectExposerNode("getAge"))
 				->addNode(new ConditionalValidationNode(ConditionalValidationNode::TYPE_EQUALS,22)))
@@ -54,6 +62,7 @@ class Test1 extends PHPUnit_Framework_TestCase {
 		)));
 		$profile = new ValidationProfile($entryNode);
 		$profile->validate(new TestObject1("Test 1",22));
+		TestIntentHandler::$checkParams = true;
 		return $profile;
 	}
 	
@@ -67,6 +76,7 @@ class Test1 extends PHPUnit_Framework_TestCase {
 	}
 	
 	public function testAction(){
+		TestIntentHandler::$checkParams = false;
 		$action = new TestAction1();
 		$payload = new IntentPayload($action, ['amount' => 4]);
 		try{
@@ -79,6 +89,7 @@ class Test1 extends PHPUnit_Framework_TestCase {
 		$action->validate($payload);
 		$action->doAction($payload);
 		$this->assertEquals(4,$payload->getOutVariables()['amount']);
+		TestIntentHandler::$checkParams = true;
 		return $action;
 	}
 	
@@ -91,24 +102,12 @@ class Test1 extends PHPUnit_Framework_TestCase {
 		self::$profileHandler->addIntentProfile($action, $action->getParameter('object1'),$profile);
 		
 		$payload	= new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 1", 22)]);
-		$payload2	= new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 2", 22)]);
-		$payload3	= new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 1", 23)]);
-		$action->validate($payload);
-		$this->assertTrue(true);
+		$payload2	= new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 2", 22)]); //expected to fail
+		$payload3	= new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 1", 23)]); //expected to fail
 		
-		try{
-			$action->validate($payload2);
-			$this->assertTrue(false,"Expected it to fail here because the payload has the wrong value: Test 2");
-		} catch (ValidationException $ex) {
-			$this->assertTrue(true);
-		}
-		
-		try{
-			$action->validate($payload3);
-			$this->assertTrue(false,"Expected it to fail here because the payload has the wrong value: 23");
-		} catch (ValidationException $ex) {
-			$this->assertTrue(true);
-		}
+		$this->assertTrue($action->validate($payload));
+		$this->assertFalse($action->validate($payload2,false));
+		$this->assertFalse($action->validate($payload3,false));
 	}
 	
 }

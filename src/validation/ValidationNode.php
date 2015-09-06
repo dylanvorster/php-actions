@@ -26,7 +26,7 @@ abstract class ValidationNode{
 	 * @return ValidationNode
 	 */
 	public static function deserializeNode($data){
-		$node = Engine::get()->getValidationNodeFactory($data['name'])->generate();
+		$node = Engine::get()->getValidationNodeFactory($data['type'])->generate();
 		$node->deserialize($data);
 		return $node;
 	}
@@ -41,7 +41,7 @@ abstract class ValidationNode{
 	
 	public function serialize(){
 		return [
-			'name' => Engine::get()->getValidationNodeFactoryForClass(get_class($this))->getName(),
+			"type" => Engine::get()->getValidationNodeFactoryForClass(get_class($this))->getName(),
 			'allow' => $this->allow
 		];
 	}

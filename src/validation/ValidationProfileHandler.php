@@ -2,10 +2,9 @@
 /**
  * @author Dylan Vorster
  */
-abstract class validationProfileHandler{
+abstract class ValidationProfileHandler{
 	
 	public abstract function getValidationProfile($identifier);
 	
 	public abstract function getValidationProfilesFor(Intent $action,Parameter $parameter);
-	
 }

@@ -16,6 +16,10 @@ class Parameter{
 		$this->meta->setName($name);
 		$this->required = $required;
 	}
+	
+	public function getType(){
+		return "string";
+	}
 
 	public function getName() {
 		return $this->meta->getName();

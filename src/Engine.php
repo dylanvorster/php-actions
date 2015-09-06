@@ -14,11 +14,26 @@ class Engine{
 	 * @var validationProfileHandler[]
 	 */
 	protected $validationProfileHandlers;
+	
+	/**
+	 *
+	 * @var IntentHandler[]
+	 */
+	protected $intentHandlers;
+	
+	
+	/**
+	 *
+	 * @var static
+	 */
 	protected static $static;
 
 	public function __construct() {
 		$this->validationProfileHandlers = [];
 		$this->validationNodeFactories = [];
+		$this->intentHandlers = [];
+		
+		//install defaults
 		$this->addValidationNodeFactory(new ClassCheckNodeFactory());
 		$this->addValidationNodeFactory(new ConditionalValidationNodeFactory());
 		$this->addValidationNodeFactory(new ItteratorNodeFactory());
@@ -26,8 +41,44 @@ class Engine{
 		$this->addValidationNodeFactory(new ValidationProfileNodeFactory());
 	}
 	
+	public function addIntentHandler(IntentHandler $handler){
+		$this->intentHandlers[] = $handler;
+	}
+	
 	public function addValidationProfileHandler(validationProfileHandler $handler){
 		$this->validationProfileHandlers[] = $handler;
+	}
+	
+	/**
+	 * checks to see if parameters should be validated, we only need
+	 * on of the handlers to say yes
+	 * 
+	 * @param \storm\actions\Intent $intent
+	 * @return boolean
+	 */
+	public function shouldParametersBeValidated(Intent $intent){
+		foreach ($this->intentHandlers as $handler) {
+			if($handler->shouldParametersBeValidated($intent)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks to see if an intent is allowed for the given session,
+	 * we only need one to say allowed, to pass this test
+	 * 
+	 * @param \storm\actions\Intent $intent
+	 * @return boolean
+	 */
+	public function isIntentAllowed(Intent $intent){
+		foreach ($this->intentHandlers as $handler) {
+			if($handler->isIntentAllowed($intent)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
