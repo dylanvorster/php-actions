@@ -37,7 +37,9 @@ class RightsDesignerBootstrap{
 	}
 	
 	public static function collect(Array $intents){
-		$intents = array_map(self::convertIntentToArray, $intents);
+		$intents = array_map(function(Intent $intent){
+			return self::convertIntentToArray($intent);
+		}, array_values($intents));
 		
 		$finalArray = [];
 		foreach ($intents as $intent) {
