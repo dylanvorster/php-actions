@@ -4,7 +4,6 @@
  */
 abstract class ValidationNode{
 	
-	protected $allow;
 	
 	public function __construct() {
 		$this->allow = true;
@@ -12,9 +11,6 @@ abstract class ValidationNode{
 	
 	public function validate($value){
 		$this->match($value);
-		if(!$this->allow){
-			throw new ValidationException("Not allowed to access action with these properties");
-		}
 		return true;
 	}
 	
@@ -36,13 +32,11 @@ abstract class ValidationNode{
 	}
 	
 	public function deserialize($data){
-		$this->allow = $data['allow'];
 	}
 	
 	public function serialize(){
 		return [
 			"type" => Engine::get()->getValidationNodeFactoryForClass(get_class($this))->getName(),
-			'allow' => $this->allow
 		];
 	}
 	

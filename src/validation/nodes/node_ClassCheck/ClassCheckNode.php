@@ -28,12 +28,12 @@ class ClassCheckNode extends ValidationContainerNode{
 	
 	public function deserialize($data) {
 		parent::deserialize($data);
-		$this->class = $data['class'];
+		$this->class = $data['classtype'];
 	}
 	
 	public function serialize() {
 		$response = parent::serialize();
-		$response['class'] = $this->class;
+		$response['classtype'] = $this->class;
 		return $response;
 	}
 

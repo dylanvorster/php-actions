@@ -5,21 +5,23 @@
 class ValidationProfile{
 	
 	protected $entry;
+	/**
+	 *
+	 * @var Meta
+	 */
 	protected $meta;
-	protected $identifier;
 
-	public function __construct(ValidationNode $node) {
+	public function __construct(ValidationNode $node = NULL) {
 		$this->entry = $node;
 		$this->meta = new Meta();
-		$this->identifier = sha1(uniqid());
 	}
 	
 	public function getIdentifier() {
-		return $this->identifier;
+		return $this->meta->getIdentifier();
 	}
 
 	public function setIdentifier($identifier) {
-		$this->identifier = $identifier;
+		$this->meta->setIdentifier($identifier);
 	}
 
 	/**
@@ -48,16 +50,20 @@ class ValidationProfile{
 	 * @return \storm\actions\ValidationProfile
 	 */
 	public static function deserializeProfile($data){
-		$node = ValidationNode::deserializeNode($data['entry']);
-		$profile = new ValidationProfile($node);
+		$profile = new ValidationProfile(null);
+		$profile->deserialize($data);
 		return $profile;
 	}
 	
 	public function serialize(){
-		return [
-			'entry' => $this->entry->serialize(),
-			'meta' => $this->meta->serialize(),
-		];
+		$serial = $this->entry->serialize();
+		$serial['meta'] =  $this->meta->serialize();
+		return $serial;
+	}
+	
+	public function deserialize($data){
+		$this->entry = ValidationNode::deserializeNode($data);
+		$this->meta->deserialize($data['meta']);
 	}
 	
 }

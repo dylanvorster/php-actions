@@ -25,8 +25,8 @@ abstract class ValidationContainerNode extends ValidationNode{
 	
 	public function deserialize($data) {
 		parent::deserialize($data);
-		if($data['nodes']){
-			foreach ($data['nodes'] as $node) {
+		if($data['children']){
+			foreach ($data['children'] as $node) {
 				$this->addNode(self::deserializeNode($node));
 			}
 		}
@@ -37,7 +37,7 @@ abstract class ValidationContainerNode extends ValidationNode{
 		if(count($this->nodes) === 0){
 			return $response;
 		}
-		$response['nodes'] = array_map(function(ValidationNode $child){
+		$response['children'] = array_map(function(ValidationNode $child){
 			return $child->serialize();
 		}, $this->nodes);
 		return $response;

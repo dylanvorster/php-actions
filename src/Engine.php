@@ -34,6 +34,10 @@ class Engine{
 		$this->intentHandlers = [];
 		
 		//install defaults
+		$this->installDefaults();
+	}
+	
+	public function installDefaults(){
 		$this->addValidationNodeFactory(new ClassCheckNodeFactory());
 		$this->addValidationNodeFactory(new ConditionalValidationNodeFactory());
 		$this->addValidationNodeFactory(new ItteratorNodeFactory());

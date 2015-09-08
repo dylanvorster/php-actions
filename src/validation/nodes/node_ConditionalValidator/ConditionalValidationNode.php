@@ -10,11 +10,11 @@ class ConditionalValidationNode extends ValidationNode{
 	protected $type;
 	protected $value;
 	
-	const TYPE_EQUALS = 1;
-	const TYPE_GREATER_THAN_EQUALS = 2;
-	const TYPE_LESS_THAN_EQUALS = 3;
-	const TYPE_GREATER_THAN = 4;
-	const TYPE_LESS_THAN = 5;
+	const TYPE_EQUALS = '=';
+	const TYPE_GREATER_THAN_EQUALS = '>=';
+	const TYPE_LESS_THAN_EQUALS = '<=';
+	const TYPE_GREATER_THAN = '>';
+	const TYPE_LESS_THAN = '<';
 	
 	/**
 	 * 
@@ -24,7 +24,7 @@ class ConditionalValidationNode extends ValidationNode{
 	 */
 	public function __construct($type,$value) {
 		parent::__construct();
-		if(array_search($type, [1,2,3,4,5]) === false){
+		if(array_search($type, ['=','>=','<=','>','<']) === false){
 			throw new ValidationException("Incorrect type flag passed into conditional validation node with type: {$type}");
 		}
 		$this->type = $type;

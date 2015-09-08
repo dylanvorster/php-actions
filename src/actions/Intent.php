@@ -91,6 +91,10 @@ class Intent{
 		$checksPassed = 0;
 		$shouldParametersBeValidated = Engine::get()->shouldParametersBeValidated($this);
 		
+		if(count($this->inputParameters) == 0){
+			return true;
+		}
+		
 		//yes it is allowed, now validate each parameter
 		//for each parameter we have, we must find the value in the payload
 		foreach ($this->inputParameters as $parameter) {
