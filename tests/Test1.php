@@ -78,14 +78,14 @@ class Test1 extends PHPUnit_Framework_TestCase {
 	public function testAction(){
 		TestIntentHandler::$checkParams = false;
 		$action = new TestAction1();
-		$payload = new IntentPayload($action, ['amount' => 4]);
+		$payload = new IntentPayload(['amount' => 4]);
 		try{
 			$action->validate($payload);
 			$this->assertTrue(false, "Expected exception here because missing parameter");
 		}  catch (ValidationException $ex){
 			$this->assertTrue(true);
 		}
-		$payload = new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 1", 22)]);
+		$payload = new IntentPayload(['amount' => 4,'object1' => new TestObject1("Test 1", 22)]);
 		$action->validate($payload);
 		$action->doAction($payload);
 		$this->assertEquals(4,$payload->getOutVariables()['amount']);
@@ -101,9 +101,9 @@ class Test1 extends PHPUnit_Framework_TestCase {
 		
 		self::$profileHandler->addIntentProfile($action, $action->getParameter('object1'),$profile);
 		
-		$payload	= new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 1", 22)]);
-		$payload2	= new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 2", 22)]); //expected to fail
-		$payload3	= new IntentPayload($action, ['amount' => 4,'object1' => new TestObject1("Test 1", 23)]); //expected to fail
+		$payload	= new IntentPayload(['amount' => 4,'object1' => new TestObject1("Test 1", 22)]);
+		$payload2	= new IntentPayload(['amount' => 4,'object1' => new TestObject1("Test 2", 22)]); //expected to fail
+		$payload3	= new IntentPayload(['amount' => 4,'object1' => new TestObject1("Test 1", 23)]); //expected to fail
 		
 		$this->assertTrue($action->validate($payload));
 		$this->assertFalse($action->validate($payload2,false));

@@ -23,7 +23,7 @@ abstract class Action extends Intent{
 	 */
 	public static function simpleInvoke($array = [],$throw = true){
 		$action = new static();
-		$payload = new IntentPayload($action, $array);
+		$payload = new IntentPayload($array);
 		$action->invoke($payload,$throw);
 		return $payload;
 	}

@@ -12,9 +12,12 @@ class IntentPayload{
 	protected $inVariables;
 	protected $intent;
 	
-	public function __construct(Intent $intent,$variables) {
+	public function __construct($variables = []) {
 		$this->inVariables = $variables;
 		$this->outVariables = [];
+	}
+	
+	public function setIntent(Intent $intent){
 		$this->intent = $intent;
 	}
 	

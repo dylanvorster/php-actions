@@ -80,6 +80,8 @@ class Intent{
 	 */
 	public function validate(IntentPayload $payload,$throw = true){
 		
+		$payload->setIntent($this);
+		
 		//is this intent allowed at all?
 		if(!Engine::get()->isIntentAllowed($this)){
 			if($throw){
