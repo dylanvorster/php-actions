@@ -51,4 +51,8 @@ class IntentPayload{
 	public function getOutVariables() {
 		return $this->outVariables;
 	}
+	
+	public function getInVariables() {
+		return $this->inVariables;
+	}
 }

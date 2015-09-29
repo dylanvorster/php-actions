@@ -11,8 +11,14 @@ abstract class Action extends Intent{
 	public abstract function doAction(IntentPayload $payload);
 	
 	public function invoke(IntentPayload $payload,$throw = true){
-		$this->validate($payload,$throw);
+		$response = $this->validate($payload,$throw);
+		
+		//if we are not going to throw an exception, then we must at least return false
+		if(!$throw && $response === false){
+			return false;
+		}
 		$this->doAction($payload);
+		return true;
 	}
 	
 	/**
