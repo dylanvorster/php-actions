@@ -1,0 +1,1 @@
+[![build status](http://gitlab.eezipay.co.za/ci/projects/1/status.png?ref=master)](http://gitlab.eezipay.co.za/ci/projects/1?ref=master)
