@@ -1,5 +1,5 @@
 test:
   script:
     - "curl -sS https://getcomposer.org/installer | php"
-    - "composer install"
-    - "./vendor/bin/phpunit"
+    - "php composer.phar install"
+    - "php ./vendor/bin/phpunit"
