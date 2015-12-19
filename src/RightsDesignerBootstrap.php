@@ -16,10 +16,7 @@ class RightsDesignerBootstrap{
 		$array = [
 			'allowed' => Engine::get()->isIntentAllowed($intent),
 			'validateParameters' => Engine::get()->shouldParametersBeValidated($intent),
-			"meta" => [
-				"id" => $intent->getID(),
-				"name" => $intent->getName()
-			],
+			"meta" => $intent->getMeta()->serialize(),
 			"fields" => []
 		];
 		

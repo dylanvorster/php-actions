@@ -45,7 +45,6 @@ class Meta{
 			'guid' => $this->identifier,
 			'name' => $this->name,
 			'desc' => $this->description,
-//			'tags' => implode(', ', $this->tags)
 		];
 	}
 	
@@ -53,7 +52,6 @@ class Meta{
 		$this->identifier = $data['guid'];
 		$this->name = $data['name'];
 		$this->description = $data['desc'];
-//		$this->tags = $data['tags'];
 	}
 	
 	public function getName() {

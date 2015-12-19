@@ -14,23 +14,22 @@ class Intent{
 	 */
 	protected $meta;
 	
-	protected $id;
 
 	public function __construct($name,$id = NULL) {
 		$this->inputParameters = [];
 		$this->meta = new Meta();
 		$this->meta->setName($name);
-		if($id == NULL){
-			$this->id = $name;
-		}
+		
+		//use the name as the id
+		$this->setID($id===NULL?$name:$id);
 	}
 	
 	function getID() {
-		return $this->id;
+		return $this->getMeta()->getIdentifier();
 	}
 
 	function setID($id) {
-		$this->id = $id;
+		$this->getMeta()->setIdentifier($id);
 	}
 	
 	/**
@@ -118,24 +117,33 @@ class Intent{
 
 
 				//validate each profile which contains an entry node
+				
+				$failures = [];
+				$success = 0;
+				
 				foreach ($profiles as $profile) {
 					try{
 						$result = $profile->validate($payload->get($parameter->getName()));
 					}catch(ValidationException $ex){
-						if(!$throw){
-							return false;
-						}
-						throw new ValidationException("Rights check failed for intent: [{$this->getName()}] on parameter: [{$parameter->getName()}] reason: [{$ex->getMessage()}]");
+						$failures[] = "Rights check failed for intent: [{$this->getName()}] on parameter: [{$parameter->getName()}] reason: [{$ex->getMessage()}]";
+						continue;
 					}
 
 					//and use the value from the payload (if ever a payload returns false, then we know something went wrong, but always prefer exceptions)
 					if($result === false){
-						if(!$throw){
-							return false;
-						}
-						throw new ValidationException("Rights check failed for intent: [{$this->getName()}] on parameter: [{$parameter->getName()}]");
+						$failures[] = "Rights check failed for intent: [{$this->getName()}] on parameter: [{$parameter->getName()}]";
+						continue;
 					}
 					$checksPassed++;
+					$success++;
+				}
+				
+				//there were failures and nothing was successful
+				if($success == 0 && count($failures) > 0){
+					if(!$throw){
+						return false;
+					}
+					throw new ValidationException(implode(',', $failures));
 				}
 			}
 		}
