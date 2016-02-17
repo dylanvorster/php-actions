@@ -8,7 +8,7 @@ class ObjectExposerNode extends ValidationContainerNode{
 	
 	public function __construct($methodNode) {
 		parent::__construct();
-		$this->methodName = $methodNode;
+		$this->methodName = str_replace('()', '', trim($methodNode));
 	}
 
 	public function match($value) {
@@ -31,5 +31,4 @@ class ObjectExposerNode extends ValidationContainerNode{
 		parent::deserialize($data);
 		$this->methodName = $data['method'];
 	}
-
 }
