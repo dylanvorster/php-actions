@@ -1,5 +1,6 @@
 {
     "name": "projectstorm/php-actions",
+	"version":"1.0.0",
     "description": "Description of project STORM Actions.",
     "authors": [
         {
