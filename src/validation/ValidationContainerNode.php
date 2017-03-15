@@ -25,7 +25,7 @@ abstract class ValidationContainerNode extends ValidationNode{
 	
 	public function deserialize($data) {
 		parent::deserialize($data);
-		if($data['children']){
+		if(isset($data['children'])){
 			foreach ($data['children'] as $node) {
 				$this->addNode(self::deserializeNode($node));
 			}

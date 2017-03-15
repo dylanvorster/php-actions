@@ -12,7 +12,6 @@ class ItteratorNode extends ValidationContainerNode{
 	}
 
 	public function match($value) {
-		
 		if(!is_array($value)){
 			throw new ValidationException("Value is not an array");
 		}
